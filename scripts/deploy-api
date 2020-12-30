@@ -1,0 +1,39 @@
+#! /usr/bin/env bash
+
+set -eu -o pipefail
+
+#
+# deploy-api
+#
+# deploy-api deploys a new API Gateway.
+#
+
+function usage() {
+  echo "Usage: ${0##*/} <region> <rest-api-name> <stage-name>"
+  exit 1
+}
+
+if [[ $# -ne 3 ]]; then
+  usage
+fi
+
+if ! command -v aws > /dev/null; then
+  echo "aws is missing."
+  exit 1
+fi
+
+if ! command -v jq > /dev/null; then
+  echo "jq is missing."
+  exit 1
+fi
+
+region=$1
+rest_api_name=$2
+stage_name=$3
+
+rest_api_id=$(aws apigateway get-rest-apis | jq -r ".items[] | select(.name == \"${rest_api_name}\") | .id")
+
+aws apigateway create-deployment \
+--region "${region}" \
+--rest-api-id "${rest_api_id}" \
+--stage-name ${stage_name}

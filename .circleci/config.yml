@@ -1,0 +1,49 @@
+version: '2.1'
+
+executors:
+  main:
+    working_directory: ~/project/terraform-aws-kinesis-api-gateway
+    docker:
+      - image: cimg/base:2020.01
+
+jobs:
+  test:
+    executor: main
+    steps:
+      - checkout
+      - run:
+          name: "Download and install terraform"
+          command: |
+            set -euo pipefail
+            cd ~
+            mkdir -p ~/bin
+            curl -sSLO https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+            [ $(sha256sum terraform_${TERRAFORM_VERSION}_linux_amd64.zip | cut -f1 -d ' ') = ${TERRAFORM_SHA256SUM} ]
+            unzip -o -d ~/bin -o terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+            rm -vf terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+          environment:
+            TERRAFORM_VERSION: "0.13.5"
+            TERRAFORM_SHA256SUM: "f7b7a7b1bfbf5d78151cfe3d1d463140b5fd6a354e71a7de2b5644e652ca5147"
+      - run:
+          name: "Download and install terraform-docs"
+          command: |
+            set -euo pipefail
+            cd ~
+            mkdir -p ~/bin
+            curl -sSLO https://github.com/segmentio/terraform-docs/releases/download/v${TERRAFORM_DOCS_VERSION}/terraform-docs-v${TERRAFORM_DOCS_VERSION}-linux-amd64
+            [ $(sha256sum terraform-docs-v${TERRAFORM_DOCS_VERSION}-linux-amd64 | cut -f1 -d' ') = ${TERRAFORM_DOCS_SHA256SUM} ]
+            chmod 755 terraform-docs-v${TERRAFORM_DOCS_VERSION}-linux-amd64
+            mv terraform-docs-v${TERRAFORM_DOCS_VERSION}-linux-amd64 ~/bin/terraform-docs
+          environment:
+            TERRAFORM_DOCS_VERSION: "0.10.1"
+            TERRAFORM_DOCS_SHA256SUM: "37fa36d8340ceebf54f9eda73570ddbccb04fd0a53c133d3deae279161d941a1"
+      - run: echo 'export PATH=~/bin:$PATH' >> $BASH_ENV
+      - run: scripts/update-docs
+      - run: scripts/format-files
+      - run: git diff --exit-code
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - test
