@@ -1,3 +1,4 @@
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Usage
 
 Creates an AWS API Gateway REST API that proxies a AWS Kinesis stream.
@@ -55,14 +56,38 @@ This project constitutes a work of the United States Government and is not subje
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12 |
-| aws | >= 2.55.0 |
+| terraform | >= 0.13 |
+| aws | ~> 3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | >= 2.55.0 |
+| aws | ~> 3.0 |
+
+## Modules
+
+No Modules.
+
+## Resources
+
+| Name |
+|------|
+| [aws_api_gateway_authorizer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_authorizer) |
+| [aws_api_gateway_integration](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration) |
+| [aws_api_gateway_integration_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response) |
+| [aws_api_gateway_method](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method) |
+| [aws_api_gateway_method_response](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method_response) |
+| [aws_api_gateway_request_validator](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_request_validator) |
+| [aws_api_gateway_resource](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_resource) |
+| [aws_api_gateway_rest_api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_rest_api) |
+| [aws_caller_identity](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) |
+| [aws_iam_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) |
+| [aws_iam_policy_document](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) |
+| [aws_iam_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) |
+| [aws_iam_role_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) |
+| [aws_partition](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) |
+| [aws_region](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) |
 
 ## Inputs
 
@@ -83,7 +108,7 @@ This project constitutes a work of the United States Government and is not subje
 | execution\_role\_policy\_name | The name of the IAM policy attached to the IAM Execution role used by the REST API.  If not defined, then uses the value of "execution\_role\_name". | `string` | `""` | no |
 | name | Name of the AWS API Gateway REST API. | `string` | n/a | yes |
 | request\_templates\_record\_put | Override the request templates for submitting individual records via the HTTP PUT method at the /streams/{stream-name}/record path. | `map(string)` | `{}` | no |
-| streams | The ARNs of the streams the role is allowed to read from.  Use ["\*"] to allow all streams. | `list(string)` | n/a | yes |
+| streams | The ARNs of the streams the role is allowed to read from.  Use ["*"] to allow all streams. | `list(string)` | n/a | yes |
 | tags | Tags applied to the AWS API Gateway REST API. | `map(string)` | `{}` | no |
 | timeout\_milliseconds | Custom timeout between 50 and 29,000 milliseconds. | `number` | `"29000"` | no |
 
@@ -93,4 +118,4 @@ This project constitutes a work of the United States Government and is not subje
 |------|-------------|
 | rest\_api\_arn | The Amazon Resource Name (ARN) of the AWS API Gateway REST API. |
 | rest\_api\_id | The ID of the AWS API Gateway REST API. |
-
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
